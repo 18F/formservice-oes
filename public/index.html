@@ -25,6 +25,15 @@
     <!-- ANALYTICS
     ================================================== -->
     <!-- Google Analytics -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HECLJZJ53E"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-HECLJZJ53E');
+    </script>
     
     
     <!-- CSS
@@ -73,21 +82,30 @@
           <div id="formio"></div>
             
           <script type="text/javascript">
-                
-            Formio.createForm(document.getElementById('formio'), 'https://portal-test.forms.gov/dev/oestestversiona')
-            .then(function(form) {
-              // Prevent the submission from going to the form.io server.
-              form.nosubmit = true;
-                
-              // Triggered when they click the submit button.
-              form.on('submit', function(submission) {
-                var formio = new Formio('https://portal-test.forms.gov/dev/oestestversionb');
-                formio.saveSubmission(submission).then(function(sub) {
-                  form.emit('submissionDone', sub);
+            window.onload = function() {
+                Formio.use(uswds);
+                Formio.createForm(document.getElementById('formio'), 
+                                'https://submission-test.forms.gov/development/stephanietestrel716', {
+                                  language: 'en',
+                                  i18n: {
+                                    'en': {
+                                      Next: 'Continue'
+                                    }
+                                  }
+                                }
+                ).then(function(form) {
+                  //set the language to english
+                  window.setLanguage = function(lang) {
+                    form.language = 'en'
+                  };
+
+                    // Submit the form
+                    form.on('submit', function (submission) {
+                        window.location=('submitted.html?submission_id=' + submission._id);
+                    });
                 });
-              });
-            });
-          </script>
+            }
+        </script>
 
         </div>
       </div> 
